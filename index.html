@@ -172,12 +172,11 @@
     <main>
         <section class="hero" id="home" aria-label="Hero section">
             <picture class="hero-background">
-                <source srcset="assets/images/high_court.webp" type="image/webp">
-                <source srcset="assets/images/high_court.jpg" type="image/jpeg">
+                <source srcset="assets/images/High_court.jpg" type="image/jpeg">
                 <img 
                     src="assets/images/High_court.jpg" 
                     alt="Calcutta High Court building facade"
-                    loading="lazy"
+                    loading="eager"
                     width="1920"
                     height="1080"
                     class="hero-image"
@@ -194,7 +193,7 @@
                     <a href="#practice-areas" class="cta-button secondary">Our Services</a>
                 </div>
             </div>
-            <div class="hero-scroll-indicator" role="button" tabindex="0" aria-label="Scroll down">
+            <div class="hero-scroll-indicator" role="button" tabindex="0" aria-label="Scroll down" onclick="scrollToBottom()">
                 <span>Scroll Down</span>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" alt="Down arrow icon">
                     <path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -442,5 +441,14 @@
         </div>
     </footer>
     <script src="assets/js/script.js"></script>
+    <script>
+        function scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth',
+                duration: 2000
+            });
+        }
+    </script>
 </body>
 </html> 
