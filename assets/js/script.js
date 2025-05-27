@@ -174,4 +174,27 @@ document.addEventListener('DOMContentLoaded', function() {
     statItems.forEach(item => {
         observer.observe(item);
     });
+
+    // Smooth scroll to About section
+    function scrollToAbout() {
+        const aboutSection = document.querySelector('#about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+
+    // Add click event listener to scroll indicator
+    const scrollIndicator = document.querySelector('.hero-scroll-indicator');
+    if (scrollIndicator) {
+        scrollIndicator.addEventListener('click', scrollToAbout);
+        scrollIndicator.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                scrollToAbout();
+            }
+        });
+    }
 }); 
