@@ -31,14 +31,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     block: 'start'
                 });
 
-                // Update URL hash
+                // Update URL hash without triggering scroll
                 history.pushState(null, null, targetId);
             }
         });
     });
 
+    // Handle page load and refresh
+    window.addEventListener('load', function() {
+        // If there's a hash in the URL, smoothly scroll to top
+        if (window.location.hash) {
+            history.pushState(null, null, '#home');
+            // Use the same smooth scrolling method as the scroll-to-top button
+            document.documentElement.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+                duration: 2000
+            });
+        }
+    });
+
     // Form Validation and Submission
-    const contactForm = document.querySelector('.contact-form form');
+    const contactForm = document.querySelector('#consultationForm');
+    const formResponse = document.querySelector('#formResponse');
+    
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -85,12 +101,45 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (isValid) {
-                // Here you would typically send the form data to your server
-                // For now, we'll just show a success message
-                alert('Thank you for your message. We will get back to you soon!');
-                contactForm.reset();
+                // Disable submit button and show loading state
+                const submitButton = contactForm.querySelector('.submit-button');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending...';
+
+                // Create FormData object
+                const formData = new FormData(contactForm);
+
+                // Send AJAX request
+                fetch('process_consultation.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Show response message
+                    formResponse.style.display = 'block';
+                    formResponse.textContent = data.message;
+                    formResponse.className = 'form-response ' + (data.success ? 'success' : 'error');
+
+                    if (data.success) {
+                        // Reset form on success
+                        contactForm.reset();
+                    }
+                })
+                .catch(error => {
+                    formResponse.style.display = 'block';
+                    formResponse.textContent = 'An error occurred. Please try again later.';
+                    formResponse.className = 'form-response error';
+                })
+                .finally(() => {
+                    // Re-enable submit button
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Send Message';
+                });
             } else {
-                alert('Please correct the following errors:\n' + errorMessage);
+                formResponse.style.display = 'block';
+                formResponse.textContent = errorMessage;
+                formResponse.className = 'form-response error';
             }
         });
     }
@@ -113,9 +162,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Scroll to top functionality
     scrollTopBtn.addEventListener('click', function() {
-        window.scrollTo({
+        document.documentElement.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: 'smooth',
+            duration: 2000
         });
     });
 
