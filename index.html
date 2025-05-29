@@ -348,7 +348,7 @@
                 </header>
                 <div class="contact-content">
                     <article class="contact-form">
-                        <form action="#" method="POST" aria-label="Contact form">
+                        <form id="consultationForm" action="process_consultation.php" method="POST" aria-label="Contact form">
                             <div class="form-group">
                                 <label for="name" class="visually-hidden">Your Name</label>
                                 <input type="text" id="name" name="name" placeholder="Your Name" required>
@@ -376,6 +376,7 @@
                             </div>
                             <button type="submit" class="submit-button">Send Message</button>
                         </form>
+                        <div id="formResponse" class="form-response" style="display: none;"></div>
                     </article>
                     <aside class="contact-info">
                         <div class="info-item">
